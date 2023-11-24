@@ -1,26 +1,41 @@
-'use client';
-import { Avatar, Dropdown, Navbar } from "flowbite-react";
 import './Navbar.css'
+import { Avatar, Dropdown, Navbar } from "flowbite-react";
+import { Outlet } from "react-router-dom";
+import profileImage from "./../../../assets/images/profile-picture-5.jpg";
 
-const NavbarFlowbite = () => {
+export default function NavbarFlowbite() {
+    // set the target element that will be collapsed or expanded (eg. navbar menu)
+
     return (
-        <div id="nav">
-            <Navbar fluid rounded>
-                <Navbar.Brand href="https://flowbite-react.com">
-                    <img src="https://www.flowbite-react.com/favicon.svg" className="mr-3 h-6 sm:h-9" alt="Flowbite React Logo" />
-                    <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Flowbite React</span>
+        <nav>
+            <Navbar fluid={true} rounded={true}>
+                <Navbar.Brand href="https://flowbite.com/">
+                    <img
+                        src="https://flowbite.com/docs/images/logo.svg"
+                        className="mr-3 h-6 sm:h-9"
+                        alt="Flowbite Logo"
+                    />
+                    <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
+                        Flowbite
+                    </span>
                 </Navbar.Brand>
                 <div className="flex md:order-2">
                     <Dropdown
                         arrowIcon={false}
-                        inline
+                        inline={true}
                         label={
-                            <Avatar alt="User settings" img="https://flowbite.com/docs/images/people/profile-picture-5.jpg" rounded />
+                            <Avatar
+                                alt="User settings"
+                                img={profileImage}
+                                rounded={true}
+                            />
                         }
                     >
                         <Dropdown.Header>
                             <span className="block text-sm">Bonnie Green</span>
-                            <span className="block truncate text-sm font-medium">name@flowbite.com</span>
+                            <span className="block truncate text-sm font-medium">
+                                name@flowbite.com
+                            </span>
                         </Dropdown.Header>
                         <Dropdown.Item>Dashboard</Dropdown.Item>
                         <Dropdown.Item>Settings</Dropdown.Item>
@@ -31,17 +46,15 @@ const NavbarFlowbite = () => {
                     <Navbar.Toggle />
                 </div>
                 <Navbar.Collapse>
-                    <Navbar.Link href="#">
+                    <Navbar.Link href="/navbars" active={true}>
                         Home
                     </Navbar.Link>
-                    <Navbar.Link href="/about">About</Navbar.Link>
-                    <Navbar.Link href="#">Services</Navbar.Link>
-                    <Navbar.Link href="#">Pricing</Navbar.Link>
-                    <Navbar.Link href="#">Contact</Navbar.Link>
+                    <Navbar.Link href="/expenses">Patients</Navbar.Link>
+                    <Navbar.Link href="/navbars">Services</Navbar.Link>
+                    <Navbar.Link href="/navbars">Pricing</Navbar.Link>
+                    <Navbar.Link href="/navbars">Contact</Navbar.Link>
                 </Navbar.Collapse>
             </Navbar>
-        </div>
+        </nav>
     );
-};
-
-export default NavbarFlowbite;
+}
