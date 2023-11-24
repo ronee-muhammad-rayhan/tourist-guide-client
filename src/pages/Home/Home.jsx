@@ -8,7 +8,7 @@ import SwiperBanner from '../../components/Home/SwiperBanner';
 const Home = () => {
     return (
         <div>
-            <Swiper
+            <Swiper id='swiper-banner'
                 spaceBetween={50}
                 slidesPerView={3}
                 onSlideChange={() => console.log('slide change')}

@@ -11,7 +11,7 @@ import 'swiper/css/scrollbar';
 
 export default function SwiperBanner() {
     return (
-        <Swiper
+        <Swiper id='bannerSlider'
             // install Swiper modules
             modules={[Navigation, Pagination, Scrollbar, A11y]}
             spaceBetween={50}

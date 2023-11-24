@@ -1,4 +1,4 @@
-img{
+#bannerSlider img, #swiper-banner img{
     height: 300px;
     width: 700px;
 }
