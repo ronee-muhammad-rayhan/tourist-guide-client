@@ -18,8 +18,8 @@ const Home = () => {
                 <Swiper id='swiper-banner'
                     spaceBetween={50}
                     slidesPerView={3}
-                    onSlideChange={() => console.log('slide change')}
-                    onSwiper={(swiper) => console.log(swiper)}
+                // onSlideChange={() => console.log('slide change')}
+                // onSwiper={(swiper) => console.log(swiper)}
                 >
                     <SwiperSlide><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTW7t-dw6vJFJ_UBmHqUuIdIcKzvhrn4yVFmYaXaM8TuRdJBoQxihy6mwF8IeuiMQvcmC0&usqp=CAU" alt="" /></SwiperSlide>
                     <SwiperSlide><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhfd01lFB6cnk316go8YEApduBowwqZQBZU8Fm18ldqe1fihQf8sdT3KYaoibNWQcmYFk&usqp=CAU" alt="" /></SwiperSlide>

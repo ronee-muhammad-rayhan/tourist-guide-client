@@ -19,8 +19,8 @@ export default function SwiperBanner() {
             navigation
             pagination={{ clickable: true }}
             scrollbar={{ draggable: true }}
-            onSwiper={(swiper) => console.log(swiper)}
-            onSlideChange={() => console.log('slide change')}
+        // onSwiper={(swiper) => console.log(swiper)}
+        // onSlideChange={() => console.log('slide change')}
         >
             <SwiperSlide><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuEO4lUaCqomkaSeBbNH_VV1B7-NC8CmO763gPnkXEw5UhhDaK7wgpnHuARZCgqFHnH0g&usqp=CAU" alt="" /></SwiperSlide>
             <SwiperSlide><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVyGcgds836XMgqd-P_JBMpO7A9PbajBMmWk8yVwcXOPNS-ToFJYFwiTyWCgSzCz1hJW0&usqp=CAU" alt="" /></SwiperSlide>
