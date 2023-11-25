@@ -47,10 +47,8 @@ export default function NavbarFlowbite() {
                             }
                         >
                             <Dropdown.Header>
-                                <span className="block text-sm">RoneeMRayhan</span>
-                                <span className="block truncate text-sm font-medium">
-                                    roneemrayhan@rayhanworld.com
-                                </span>
+                                {user.displayName && <span className="block text-sm">{user?.displayName}</span>}
+                                {user.email && <span className="block truncate text-sm font-medium">{user?.email}</span>}
                             </Dropdown.Header>
                             <Dropdown.Item>Dashboard</Dropdown.Item>
                             <Dropdown.Item>Settings</Dropdown.Item>

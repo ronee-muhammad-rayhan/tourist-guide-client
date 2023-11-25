@@ -3,9 +3,9 @@ import ReactPlayer from 'react-player/youtube'
 
 const Overview = () => {
     return (
-        <div>
+        <div className='w-full'>
             overview
-            <ReactPlayer url='https://www.youtube.com/watch?v=LXb3EKWsInQ' />
+            <ReactPlayer controls style={{ maxWidth: '300px', maxHeight: '200px' }} /* style={{ width: `${300}` }} */ /* controls width={100} */ url='https://www.youtube.com/watch?v=LXb3EKWsInQ' />
         </div>
     );
 };
