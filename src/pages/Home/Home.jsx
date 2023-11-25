@@ -6,6 +6,8 @@ import 'swiper/css';
 import SwiperBanner from '../../components/Home/SwiperBanner';
 import TourismTravelGuide from '../../components/Home/TourismTravelGuide';
 import { Helmet } from 'react-helmet-async';
+import TourType from '../../components/Home/TourType';
+import TouristStory from '../../components/Home/TouristStory';
 
 const Home = () => {
     return (
@@ -13,7 +15,7 @@ const Home = () => {
             <Helmet>
                 <title>Tourists Guide | Home</title>
             </Helmet>
-            {/* slider/banner section */}
+            {/* Banner/Slider Section */}
             <section>
                 <Swiper id='swiper-banner'
                     spaceBetween={50}
@@ -32,6 +34,16 @@ const Home = () => {
             {/* Tourism and Travel Guide Section */}
             <section className='py-12'>
                 <TourismTravelGuide />
+            </section>
+
+            {/* Tour Type Section */}
+            <section>
+                <TourType />
+            </section>
+
+            {/* Tourist Story Section: */}
+            <section>
+                <TouristStory />
             </section>
         </div>
     );
