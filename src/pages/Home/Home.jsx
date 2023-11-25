@@ -5,10 +5,14 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import SwiperBanner from '../../components/Home/SwiperBanner';
 import TourismTravelGuide from '../../components/Home/TourismTravelGuide';
+import { Helmet } from 'react-helmet-async';
 
 const Home = () => {
     return (
         <div>
+            <Helmet>
+                <title>Tourists Guide | Home</title>
+            </Helmet>
             {/* slider/banner section */}
             <section>
                 <Swiper id='swiper-banner'
