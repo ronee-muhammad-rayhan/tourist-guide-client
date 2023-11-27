@@ -2,6 +2,7 @@ import PropTypes from "prop-types"
 import { createContext, useEffect, useState } from "react";
 import { GithubAuthProvider, GoogleAuthProvider, OAuthProvider, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from "firebase/auth";
 import { app } from "../firebase/firebase.config";
+import useAxiosPublic from "../hooks/useAxiosPublic";
 
 const providerGoogle = new GoogleAuthProvider();
 const providerApple = new OAuthProvider('apple.com');
@@ -13,6 +14,7 @@ const AuthProvider = ({ children }) => {
 
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const axiosPublic = useAxiosPublic();
 
     const createUser = (email, password) => {
         setLoading(true);
@@ -46,22 +48,35 @@ const AuthProvider = ({ children }) => {
     }
 
     useEffect(() => {
-        const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
+        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+            setUser(currentUser);
             if (currentUser) {
-                setUser(currentUser);
-                console.log('currentUser: ', currentUser);
-                setLoading(false);
-            } else {
-                console.log('user has signed out');
-                setLoading(false);
-                console.log('currentUser: ', currentUser);
+                // console.log(currentUser);
+                // get token and store client
+                const userInfo = { email: currentUser.email }
+                axiosPublic.post('/jwt', userInfo)
+                    .then(res => {
+                        if (res.data.token) {
+                            localStorage.setItem('access-token', res.data.token);
+                            // console.log(res.data.token);
+                            setLoading(false);
+                        }
+                    })
             }
+            else {
+                // TODO: remove token (if token in the client side: Local storage, caching, in memory)
+                localStorage.removeItem('access-token');
+                // setLoading(false);
+                // setLoading(false);
+                // setLoading(false);
+            }
+            console.log("current user", currentUser);
+            // setLoading(false);
         });
-
         return () => {
-            return unSubscribe();
-        }
-    }, [user]);
+            return unsubscribe();
+        };
+    }, [axiosPublic]);
 
     const authInfo = {
         user,

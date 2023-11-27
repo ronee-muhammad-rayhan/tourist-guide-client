@@ -2,16 +2,29 @@ import './Navbar.css'
 import { Avatar, Dropdown, Navbar } from "flowbite-react";
 import profileImage from "./../../../assets/images/profile-picture-5.jpg";
 import useAuth from '../../../hooks/useAuth';
+// import { useNavigate } from 'react-router-dom';
+/* import { useEffect } from 'react'; */
 
 export default function NavbarFlowbite() {
     // set the target element that will be collapsed or expanded (eg. navbar menu)
     const { user, logOut } = useAuth();
+    // const navigate = useNavigate();
 
-    const handleLogOut = () => {
-        logOut()
-            .then(() => { })
-            .catch(error => console.log(error));
-    }
+    // const handleLogOut = () => {
+    //     logOut()
+    //         .then(() => {
+    //             return navigate('/');
+    //         })
+    //         .catch(error => console.log(error));
+    // }
+
+    /* useEffect(() => {
+        (async () => {
+            if (user === null) {
+                return
+            }
+        })()
+    }, [user]) */
 
     return (
         <nav>
@@ -54,7 +67,7 @@ export default function NavbarFlowbite() {
                             <Dropdown.Item>Settings</Dropdown.Item>
                             <Dropdown.Item>Offer Announcements</Dropdown.Item>
                             <Dropdown.Divider />
-                            <Dropdown.Item onClick={handleLogOut}>Logout</Dropdown.Item>
+                            <Dropdown.Item onClick={logOut/* handleLogOut */}>Logout</Dropdown.Item>
                         </Dropdown>
                     }
                     {
