@@ -2,9 +2,11 @@ import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
 import { useRef, useState } from "react";
 import Swal from "sweetalert2";
+import useAxiosPublic from "../../../hooks/useAxiosPublic";
 
 const Register = () => {
 
+    const axiosPublic = useAxiosPublic();
     const { createUser, user, updateUserProfile } = useAuth();
     const [firebaseError, setFirebaseError] = useState('');
     const [passwordError, setPasswordError] = useState('');
@@ -40,11 +42,34 @@ const Register = () => {
             return console.log("Password should at least 6 characters long with minimum one capital letter and one special character");
         }
 
-        await createUser(email, password)
-            .then((userCredential) => {
+        /* await createUser(email, password)
+            .then(async (userCredential) => {
                 swalNotification();
                 console.log('user created: ', userCredential.user);
                 setValidation("");
+                await updateUserProfile(name, photo)
+                    .then(async () => {
+                        // create user to database
+                        const userInfo = {
+                            name: name,
+                            email: email
+                        }
+                        await axiosPublic.post('/users', userInfo)
+                            .then(res => {
+                                console.log('user added to the database');
+                                if (res.data.insertedId) {
+                                    Swal.fire({
+                                        position: "top-end",
+                                        icon: "success",
+                                        title: `User created and updated Successfully: ${user?.email}`,
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    });
+                                    navigate('/');
+                                }
+                            })
+                    })
+                    .catch(error => console.log(error));
             })
             .catch((error) => {
                 console.error(error);
@@ -59,23 +84,77 @@ const Register = () => {
                 } else if (error.code == "auth/weak-password") {
                     setValidation("The password is too weak.");
                 }
-            });
+            }); */
+        try {
+            const userCredential = await createUser(email, password);
+            swalNotification();
+            console.log('user created: ', userCredential.user);
+            setValidation("");
 
-        if (!validation) {
-            const newUser = {
-                displayName: name,
-                photoURL: photo,
+            const userObject = { displayName: name, photoURL: photo }
+
+            try {
+                await updateUserProfile(userObject)
+                    .then(() => {
+                        console.log(`ProfileUpdated: `, user);
+                    }).catch((error) => {
+                        console.error("Error to Profile Update" + error);
+                    });
+                // create user to database
+                const userInfo = {
+                    name: name,
+                    email: email
+                }
+
+                try {
+                    const res = await axiosPublic.post('/users', userInfo);
+                    console.log('user added to the database');
+                    if (res.data.insertedId) {
+                        Swal.fire({
+                            position: "top-end",
+                            icon: "success",
+                            title: `User created and updated Successfully: ${user?.email}`,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        navigate('/dashboard');
+                    }
+                } catch (err) { console.log(err); }
+
+            } catch (error) {
+                console.log(error)
             }
-            await updateUserProfile(newUser)
-                .then(() => {
-                    console.log('user updated: ', user);
-                    setFirebaseError('');
-                    navigate('/');
-                }).catch(error => {
-                    console.error(error);
-                    setFirebaseError(error);
-                })
+
+        } catch (error) {
+            console.error(error);
+            console.log(error);
+            setFirebaseError(error.message);
+            if (error.code == "auth/email-already-in-use") {
+                setValidation("The email address is already in use");
+            } else if (error.code == "auth/invalid-email") {
+                setValidation("The email address is not valid.");
+            } else if (error.code == "auth/operation-not-allowed") {
+                setValidation("Operation not allowed.");
+            } else if (error.code == "auth/weak-password") {
+                setValidation("The password is too weak.");
+            }
         }
+
+        // if (!validation) {
+        //     const newUser = {
+        //         displayName: name,
+        //         photoURL: photo,
+        //     }
+        //     await updateUserProfile(newUser)
+        //         .then(() => {
+        //             console.log('user updated: ', user);
+        //             setFirebaseError('');
+        //             navigate('/');
+        //         }).catch(error => {
+        //             console.error(error);
+        //             setFirebaseError(error);
+        //         })
+        // }
     }
 
     return (
