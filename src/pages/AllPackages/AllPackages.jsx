@@ -19,7 +19,7 @@ const AllPackages = () => {
     return (
         <div>
             <h2>Our Packages</h2>
-            <div className="cards-container">
+            <div className="cards-container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                 {tours?.map((tour, index) => (
                     <motion.div
                         key={index}
@@ -29,24 +29,36 @@ const AllPackages = () => {
                         animate="visible"
                         transition={{ duration: 0.5 }}
                     >
-                        {/* Spot photo with heart icon */}
-                        <img src={tour?.photo || "https://images.prothomalo.com/prothomalo-english/import/media/2019/07/11/74bfcc523b223bd0a7c0710f15c7ce6f-Sundarbans.jpg?w=1200&h=675&auto=format%2Ccompress&fit=max"} alt="tour" />
-                        <button onClick={() => addToWishlist(tour?._id)}>❤️</button>
-                        {/* Tour Type, Trip Title, Price */}
-                        <p>Tour Type: {tour?.tourType}</p>
-                        <h3>{tour?.name}</h3>
-                        <p>Price: {tour?.price}</p>
-                        {/* View tour Button */}
-                        <Link to={`/tours/${tour?.id}`}>
-                            <button>View Package</button>
-                        </Link>
+                        <div className="max-w-lg p-4 shadow-md dark:bg-gray-900 dark:text-gray-100">
+                            <div className="space-y-4">
+                                {/* Spot photo with heart icon */}
+                                <div className="space-y-2 relative">
+                                    <img src={tour?.image || "https://source.unsplash.com/random/480x360/?4"} alt="" className="block object-cover object-center w-full rounded-md h-72 dark:bg-gray-500" />
+                                    <button className="absolute top-0 right-3" onClick={() => addToWishlist(tour?._id)}>❤️</button>
+                                </div>
+                                {/* Tour Type, Trip Title, Price */}
+                                <div className="space-y-2">
+                                    <div className="flex items-center text-xs">
+                                        <span>{tour?.type || 'Tour Type'}</span>
+                                    </div>
+                                    <a rel="noopener noreferrer" href="#" className="block">
+                                        <h3 className="text-xl font-semibold dark:text-violet-400">{tour?.name}</h3>
+                                    </a>
+                                    <p className="leadi dark:text-gray-400">Price: ${tour?.price}</p>
+                                </div>
+                            </div>
+                            {/* View tour Button */}
+                            <Link to={`/tours/${tour?.id}`}>
+                                <button className="btn btn-primary w-full">View Package</button>
+                            </Link>
+                        </div>
                     </motion.div>
                 ))}
             </div>
             {/* All Packages Button */}
-            <Link to="/tours">
+            {/* <Link to="/tours">
                 <button>All Packages</button>
-            </Link>
+            </Link> */}
         </div>
         // <div>
         //     <h2 className="text-3xl">Total Packages: {tours?.length}</h2>
