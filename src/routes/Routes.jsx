@@ -38,8 +38,9 @@ export const router = createBrowserRouter([
                 element: <AllPackages />
             },
             {
-                path: 'package-details',
-                element: <PackageDetails />
+                path: 'tours/:id',
+                element: <PackageDetails />,
+                loader: ({ params }) => fetch(`http://localhost:5005/tours/${params.id}`)
             },
             {
                 path: 'contact',

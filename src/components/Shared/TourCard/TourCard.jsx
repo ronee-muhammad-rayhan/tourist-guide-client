@@ -42,7 +42,7 @@ const TourCard = ({ tour }) => {
                         </div>
                     </div>
                     {/* View tour Button */}
-                    <Link to={`/tours/${tour?.id}`}>
+                    <Link to={`/tours/${tour?._id}`}>
                         <button className="btn btn-primary w-full">View Package</button>
                     </Link>
                 </div>
