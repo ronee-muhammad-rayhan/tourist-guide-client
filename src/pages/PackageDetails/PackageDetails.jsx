@@ -13,9 +13,65 @@ const PackageDetails = () => {
     const [guides] = useGuides();
     const { user } = useAuth();
     const [selectedGuide, setSelectedGuide] = useState('');
+    const [booking] = useState({
+        touristName: user?.displayName,
+        touristEmail: user?.email,
+        touristPhotoURL: user?.photoURL,
+        guide: '',
+        // guideName: '',
+        // guideEmail: '',
+        price: tour?.price,
+        date: '',
+    })
+    // const [booking, setBooking] = useState({
+    //     touristName: user?.displayName,
+    //     touristEmail: user?.email,
+    //     touristPhotoURL: user?.photoURL,
+    //     guideName: '',
+    //     guideEmail: '',
+    //     price: '',
+    //     date: '',
+    // })
+    // const [booking] = useState({
+    //     touristName: user?.displayName,
+    //     touristEmail: user?.email,
+    //     touristPhotoURL: user?.photoURL,
+    //     guideName: '',
+    //     guideEmail: '',
+    //     price: '',
+    //     date: '',
+    // })
 
     const [openModal, setOpenModal] = useState(false);
     const emailInputRef = useRef < HTMLInputElement > (null);
+
+    const handleChange = (event) => {
+        console.log(event.target.value);
+
+        console.log(event.target.name);
+
+        switch (event.target.name) {
+
+            case 'name':
+                booking.touristName = event.target.value
+                break
+
+            case 'email':
+                booking.email = event.target.value
+                break
+
+            case 'price':
+                booking.price = event.target.value
+                break
+
+            case 'date':
+                booking.date = event.target.value
+                break
+            // default:
+            //     break
+
+        }
+    }
 
     const handleSelectGuide = (e) => {
         setSelectedGuide(e.target.value)
@@ -26,6 +82,36 @@ const PackageDetails = () => {
 
     const handleBooking = () => {
         console.log(selectedGuide);
+
+
+
+        // const bookingUpdated = {
+        //     touristName: user?.displayName,
+        //     touristEmail: user?.email,
+        //     touristPhotoURL: user?.photoURL,
+        //     guideName: '',
+        //     guideEmail: '',
+        //     price: '',
+        //     date: '',
+        // }
+
+        // setBooking(bookingUpdated)
+
+        booking.guide = selectedGuide
+
+        console.log(booking);
+
+        // const bookingReset = {
+        //     touristName: '',
+        //     touristEmail: '',
+        //     touristPhotoURL: '',
+        //     guideName: '',
+        //     guideEmail: '',
+        //     price: '',
+        //     date: '',
+        // }
+
+        // setBooking(bookingReset)
 
     }
 
@@ -55,11 +141,11 @@ const PackageDetails = () => {
                         <div className="grid grid-cols-6 gap-4 col-span-full">
                             <div className="col-span-full sm:col-span-3">
                                 <label htmlFor="touristname" className="text-sm">Your name</label>
-                                <input id="touristname" type="text" defaultValue={user?.displayName} placeholder="Put your name here" className="w-full rounded-md focus:ring focus:ri focus:ri dark:border-gray-700 dark:text-gray-900" />
+                                <input onChange={handleChange} id="touristname" type="text" name="name" defaultValue={user?.displayName} placeholder="Put your name here" className="w-full rounded-md focus:ring focus:ri focus:ri dark:border-gray-700 dark:text-gray-900" />
                             </div>
                             <div className="col-span-full sm:col-span-3">
                                 <label htmlFor="email" className="text-sm">Email</label>
-                                <input id="email" type="email" defaultValue={user?.email} readOnly disabled required placeholder="Email" className="w-full rounded-md focus:ring focus:ri focus:ri dark:border-gray-700 dark:text-gray-900" />
+                                <input onChange={handleChange} id="email" type="email" name="email" defaultValue={user?.email} readOnly disabled required placeholder="Email" className="w-full rounded-md focus:ring focus:ri focus:ri dark:border-gray-700 dark:text-gray-900" />
                             </div>
                             <div className="col-span-full">
                                 <label htmlFor="address" className="text-sm">Address</label>
@@ -94,11 +180,11 @@ const PackageDetails = () => {
                             </div>
                             <div className="col-span-full sm:col-span-3">
                                 <label htmlFor="price" className="text-sm">Price</label>
-                                <input id="price" type="text" defaultValue={`$${tour?.price}`} readOnly placeholder="$" className="w-full rounded-md focus:ring focus:ri focus:ri dark:border-gray-700 dark:text-gray-900" spellCheck="false" data-ms-editor="true" />
+                                <input onChange={handleChange} id="price" type="text" name="price" defaultValue={`$${tour?.price}`} readOnly placeholder="$" className="w-full rounded-md focus:ring focus:ri focus:ri dark:border-gray-700 dark:text-gray-900" spellCheck="false" data-ms-editor="true" />
                             </div>
                             <div className="col-span-full">
                                 <label htmlFor="date" className="text-sm">Tour Date</label>
-                                <textarea id="date" placeholder="" className="w-full rounded-md focus:ring focus:ri focus:ri dark:border-gray-700 dark:text-gray-900" spellCheck="false" data-ms-editor="true"></textarea>
+                                <textarea onChange={handleChange} id="date" name="date" placeholder="" className="w-full rounded-md focus:ring focus:ri focus:ri dark:border-gray-700 dark:text-gray-900" spellCheck="false" data-ms-editor="true"></textarea>
                             </div>
                         </div>
                     </fieldset>
@@ -145,7 +231,7 @@ const PackageDetails = () => {
                             </div> */}
                             <div className="flex flex-col items-center justify-center gap-7">
                                 <div className="">
-                                    <Button onClick={handleBooking}>Confirm Booking</Button>
+                                    <input type="submit" className="btn btn-primary bg-cyan-600 border-cyan-700 px-10" onClick={handleBooking} value={`Confirm Booking`} />
                                 </div>
                                 <div className="text-cyan-700 hover:underline dark:text-cyan-500">
                                     <Link to={`/bookings`}><button>My Bookings</button></Link>
