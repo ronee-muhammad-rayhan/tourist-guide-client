@@ -22,6 +22,7 @@ const PackageDetails = () => {
     const navigate = useNavigate();
     const axiosSecure = useAxiosSecure();
     const [booking] = useState({
+        tourPackageTitle: tour?.title,
         touristName: user?.displayName,
         touristEmail: user?.email,
         touristPhotoURL: user?.photoURL,
@@ -92,9 +93,9 @@ const PackageDetails = () => {
                 <div className="w-full mx-auto">
                     <img className="w-full h-96 rounded-3xl" src={tour?.image} alt="" />
                 </div>
-                <h2>{tour?.name}</h2>
-                <p>Description: {tour?.description}</p>
-                <h3>Tour Plan:</h3>
+                <h2 className="text-3xl font-bold py-3">{tour?.title}</h2>
+                <p className="pb-3">Description: {tour?.description}</p>
+                <h3 className="text-xl font-bold">Tour Plan:</h3>
                 <ul>
                     {tour?.itinerary?.map((item, index) => (
                         <li key={index}>

@@ -93,7 +93,7 @@ const MyBookings = () => {
                                                     <p>{i + 1}</p>
                                                 </td>
                                                 <td className="p-3">
-                                                    <p>{booking?.packageName}</p>
+                                                    <p>{booking?.tourPackageTitle}</p>
                                                 </td>
                                                 <td className="p-3">
                                                     {/* <p>14 Jan 2022</p> */}
