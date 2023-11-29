@@ -7,6 +7,8 @@ import useAuth from "../../hooks/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import Swal from "sweetalert2";
+// import useWindowSize from 'react-use/lib/useWindowSize'
+import Confetti from 'react-confetti'
 
 const MyBookings = () => {
     const { user } = useAuth();
@@ -14,6 +16,7 @@ const MyBookings = () => {
     const [status, setStatus] = useState('InReview');
     // const [bookings] = useBookings();
     const statusArray = ['InReview', 'Rejected', 'Accepted']
+    // const { width, height } = useWindowSize()
 
     const axiosSecure = useAxiosSecure();
     const { data: bookings = [], refetch } = useQuery({
@@ -24,6 +27,10 @@ const MyBookings = () => {
             return res.data;
         }
     })
+
+    if (bookings.length > 3) {
+        console.log('confetti');
+    }
 
     /* useEffect(() => {
 
@@ -234,7 +241,7 @@ const MyBookings = () => {
                                                             <h3 className="text-white text-md">Apply</h3>
                                                         </button>}
                                                         {
-                                                            <input type="submit" disabled={(booking?.status === 'Accepted')} value={`Cancel`} /* disabled={isActionApplied} */ onClick={handleCancel} className="btn btn-xs bg-red-500 text-white text-md" />
+                                                            <input type="submit" disabled={(booking?.status === 'Accepted')} hidden={!(booking?.status === 'InReview')} value={`Cancel`} /* disabled={isActionApplied} */ onClick={handleCancel} className={`btn btn-xs bg-red-500 text-white text-md ${booking?.status === 'InReview' ? 'hidden' : 'inline-block'}`} />
                                                         }
                                                         {<button disabled={!(booking?.status === 'Accepted')} /* disabled={isActionApplied} */ onClick={() => handlePay(user)} className="btn btn-xs bg-lime-500">
                                                             <h3 className="text-white text-md">Pay</h3>
@@ -254,6 +261,24 @@ const MyBookings = () => {
                     </div>
                 </div>
             </div>
+            <Confetti
+                tweenDuration={13000}
+                numberOfPieces={3000}
+                recycle={false}
+                width={`1024px`}
+                height={`720px`}
+                drawShape={ctx => {
+                    ctx.beginPath()
+                    for (let i = 0; i < 22; i++) {
+                        const angle = 0.35 * i
+                        const x = (0.2 + (1.5 * angle)) * Math.cos(angle)
+                        const y = (0.2 + (1.5 * angle)) * Math.sin(angle)
+                        ctx.lineTo(x, y)
+                    }
+                    ctx.stroke()
+                    ctx.closePath()
+                }}
+            />
         </form>
     );
 };
