@@ -5,13 +5,13 @@ import { Helmet } from 'react-helmet-async'
 import AddTourForm from '../../../components/Form/AddTourForm'
 import { useState } from 'react'
 import { imageUpload } from '../../../api/utils'
-import useAuth from '../../../hooks/useAuth'
+// import useAuth from '../../../hooks/useAuth'
 import { addTour } from '../../../api/tours'
 import { toast } from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 const AddTour = () => {
     const navigate = useNavigate()
-    const { user } = useAuth()
+    // const { user } = useAuth()
     const [loading, setLoading] = useState(false)
     const [uploadButtonText, setUploadButtonText] = useState('Upload Image')
     const [itinerary, setItinerary] = useState([])
@@ -25,11 +25,11 @@ const AddTour = () => {
         const price = form.price.value
         const description = form.description.value
         const image = form.image.files[0]
-        const host = {
-            name: user?.displayName,
-            image: user?.photoURL,
-            email: user?.email,
-        }
+        // const host = {
+        //     name: user?.displayName,
+        //     image: user?.photoURL,
+        //     email: user?.email,
+        // }
         const image_url = await imageUpload(image)
 
         const tourData = {
@@ -37,7 +37,7 @@ const AddTour = () => {
             category,
             itinerary,
             price,
-            host,
+            // host,
             description,
             image: image_url?.data?.display_url,
         }

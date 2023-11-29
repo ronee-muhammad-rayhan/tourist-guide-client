@@ -5,16 +5,6 @@ import useAxiosPublic from "./useAxiosPublic";
 
 const useTourPackages = () => {
     const axiosPublic = useAxiosPublic();
-    // const [menu, setMenu] = useState([]);
-    // const [loading, setLoading] = useState(true);
-    // useEffect(() => {
-    //     fetch('https://bistro-boss-server-three-liard.vercel.app/menu')
-    //         .then(res => res.json())
-    //         .then(data => {
-    //             setMenu(data);
-    //             setLoading(false);
-    //         })
-    // }, []);
 
     const { data: tours = [], isPending: loading, refetch } = useQuery({
         queryKey: ['tourPackages'],
@@ -23,7 +13,6 @@ const useTourPackages = () => {
             return res.data;
         }
     })
-
 
     return [tours, loading, refetch]
 }
