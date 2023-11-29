@@ -1,5 +1,5 @@
 import { NavLink, Outlet } from "react-router-dom";
-import { FaHome, FaAd, FaList, FaSearch, FaEnvelope, FaUtensils, FaUsers, FaBook, FaUser } from 'react-icons/fa';
+import { FaHome, FaAd, FaList, FaSearch, FaEnvelope, FaUsers, FaBook, FaUser, FaListAlt } from 'react-icons/fa';
 import useAdmin from "../hooks/useAdmin";
 import useAuth from "../hooks/useAuth";
 
@@ -24,8 +24,13 @@ const Dashboard = () => {
                                     Admin Home</NavLink>
                             </li>
                             <li>
+                                <NavLink to="/dashboard/profile">
+                                    <FaUser />
+                                    My Profile</NavLink>
+                            </li>
+                            <li>
                                 <NavLink to="/dashboard/addTourPackage">
-                                    <FaUtensils></FaUtensils>
+                                    <FaListAlt />
                                     Add Tour Package</NavLink>
                             </li>
                             <li>

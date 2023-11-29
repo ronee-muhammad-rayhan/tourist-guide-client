@@ -18,6 +18,7 @@ import PackageDetails from "../pages/PackageDetails/PackageDetails";
 import MyBookings from "../pages/MyBookings/MyBookings";
 import ErrorElement from "../pages/ErrorPage/ErrorElement";
 import NotFound from "../pages/NotFoundPage/NotFound";
+import MyProfile from "../pages/Dashboard/MyProfile/MyProfile";
 
 export const router = createBrowserRouter([
     {
@@ -80,6 +81,10 @@ export const router = createBrowserRouter([
             {
                 path: 'adminHome',
                 element: <AdminRoute><AdminHome /></AdminRoute>
+            },
+            {
+                path: 'profile',
+                element: <AdminRoute><MyProfile /></AdminRoute>
             },
             {
                 path: 'AddTourPackage',
