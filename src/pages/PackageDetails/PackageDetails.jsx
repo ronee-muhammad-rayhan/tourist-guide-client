@@ -3,8 +3,8 @@ import useGuides from "../../hooks/useGuides";
 import useAuth from "../../hooks/useAuth";
 import { useState } from "react";
 import { Button, Modal } from 'flowbite-react';
-// import { Button, Checkbox, Label, Modal, TextInput } from 'flowbite-react';
 import { useRef } from 'react';
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 
 const PackageDetails = () => {
@@ -13,42 +13,23 @@ const PackageDetails = () => {
     const [guides] = useGuides();
     const { user } = useAuth();
     const [selectedGuide, setSelectedGuide] = useState('');
+    const axiosSecure = useAxiosSecure();
     const [booking] = useState({
         touristName: user?.displayName,
         touristEmail: user?.email,
         touristPhotoURL: user?.photoURL,
         guide: '',
-        // guideName: '',
-        // guideEmail: '',
         price: tour?.price,
         date: '',
     })
-    // const [booking, setBooking] = useState({
-    //     touristName: user?.displayName,
-    //     touristEmail: user?.email,
-    //     touristPhotoURL: user?.photoURL,
-    //     guideName: '',
-    //     guideEmail: '',
-    //     price: '',
-    //     date: '',
-    // })
-    // const [booking] = useState({
-    //     touristName: user?.displayName,
-    //     touristEmail: user?.email,
-    //     touristPhotoURL: user?.photoURL,
-    //     guideName: '',
-    //     guideEmail: '',
-    //     price: '',
-    //     date: '',
-    // })
 
     const [openModal, setOpenModal] = useState(false);
     const emailInputRef = useRef < HTMLInputElement > (null);
 
     const handleChange = (event) => {
-        console.log(event.target.value);
+        // console.log(event.target.value);
 
-        console.log(event.target.name);
+        // console.log(event.target.name);
 
         switch (event.target.name) {
 
@@ -67,52 +48,27 @@ const PackageDetails = () => {
             case 'date':
                 booking.date = event.target.value
                 break
-            // default:
-            //     break
-
         }
     }
 
     const handleSelectGuide = (e) => {
         setSelectedGuide(e.target.value)
-        // const selectedGuide = e.target.value;
-        // Perform action with selectedGuide if needed
-        console.log(selectedGuide);
+        // console.log(selectedGuide);
     };
 
-    const handleBooking = () => {
-        console.log(selectedGuide);
-
-
-
-        // const bookingUpdated = {
-        //     touristName: user?.displayName,
-        //     touristEmail: user?.email,
-        //     touristPhotoURL: user?.photoURL,
-        //     guideName: '',
-        //     guideEmail: '',
-        //     price: '',
-        //     date: '',
-        // }
-
-        // setBooking(bookingUpdated)
-
+    const handleBooking = async () => {
+        // console.log(selectedGuide);
         booking.guide = selectedGuide
 
-        console.log(booking);
+        // console.log(booking);
 
-        // const bookingReset = {
-        //     touristName: '',
-        //     touristEmail: '',
-        //     touristPhotoURL: '',
-        //     guideName: '',
-        //     guideEmail: '',
-        //     price: '',
-        //     date: '',
-        // }
 
-        // setBooking(bookingReset)
-
+        try {
+            const res = await axiosSecure.post(`/bookings`, booking)
+            console.log(res);
+        } catch (e) {
+            console.error(e);
+        }
     }
 
     return (
@@ -196,7 +152,6 @@ const PackageDetails = () => {
                             </div>
                         </div>
                         <div className="flex-grow flex items-end">
-                            {/* <button onClick={handleBooking} className="btn btn-primary w-full">Book Now</button> */}
                             <Button onClick={() => setOpenModal(true)} className="btn btn-primary w-full">Book Now</Button>
                         </div>
                     </div>
@@ -207,28 +162,6 @@ const PackageDetails = () => {
                     <Modal.Header />
                     <Modal.Body>
                         <div className="space-y-6">
-                            {/* <h3 className="text-xl font-medium text-gray-900 dark:text-white">Sign in to our platform</h3>
-                            <div>
-                                <div className="mb-2 block">
-                                    <Label htmlFor="email" value="Your email" />
-                                </div>
-                                <TextInput id="email" useRef={emailInputRef} placeholder="name@company.com" required />
-                            </div>
-                            <div>
-                                <div className="mb-2 block">
-                                    <Label htmlFor="password" value="Your password" />
-                                </div>
-                                <TextInput id="password" type="password" required />
-                            </div>
-                            <div className="flex justify-between">
-                                <div className="flex items-center gap-2">
-                                    <Checkbox id="remember" />
-                                    <Label htmlFor="remember">Remember me</Label>
-                                </div>
-                                <a href="#" className="text-sm text-cyan-700 hover:underline dark:text-cyan-500">
-                                    Lost Password?
-                                </a>
-                            </div> */}
                             <div className="flex flex-col items-center justify-center gap-7">
                                 <div className="">
                                     <input type="submit" className="btn btn-primary bg-cyan-600 border-cyan-700 px-10" onClick={handleBooking} value={`Confirm Booking`} />
@@ -237,15 +170,6 @@ const PackageDetails = () => {
                                     <Link to={`/bookings`}><button>My Bookings</button></Link>
                                 </div>
                             </div>
-                            {/* <div className="w-full">
-                                <Button onClick={handleBooking}>Log in to your account</Button>
-                            </div>
-                            <div className="flex justify-between text-sm font-medium text-gray-500 dark:text-gray-300">
-                                Not registered?&nbsp;
-                                <a href="#" className="text-cyan-700 hover:underline dark:text-cyan-500">
-                                    Create account
-                                </a>
-                            </div> */}
                         </div>
                     </Modal.Body>
                 </Modal>
