@@ -127,7 +127,7 @@ const PackageDetails = () => {
                     <div className="w-full flex mx-auto justify-between flex-row">
                         <div className="flex-1">
                             <div className="flex items-center space-x-2">
-                                <img src={"https://source.unsplash.com/30x30/?random"} alt="" className="w-36 h-36 rounded-box dark:text-white dark:bg-gray-700" />
+                                <img src={`${user?.photoURL}` || "https://source.unsplash.com/30x30/?random"} alt="" className="w-36 h-36 rounded-box dark:text-white dark:bg-gray-700" />
                                 <button type="button" className="px-4 py-2 border rounded-2xl dark:border-gray-100">Change</button>
                             </div>
                         </div>
