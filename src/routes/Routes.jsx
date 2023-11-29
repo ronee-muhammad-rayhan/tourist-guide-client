@@ -77,6 +77,13 @@ export const router = createBrowserRouter([
                 element: <MyBookings />
             },
 
+            // tour-guide routes
+            {
+                path: '/dashboard/tourist/profile/:email',
+                element: <MyProfile />,
+                loader: ({ params }) => fetch(`/dashboard/tourist/profile/${params?.email}`)
+            },
+
             // admin only routes
             {
                 path: 'adminHome',
