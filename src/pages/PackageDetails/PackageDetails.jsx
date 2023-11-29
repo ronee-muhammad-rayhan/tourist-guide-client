@@ -1,18 +1,25 @@
-import { Link, useLoaderData } from "react-router-dom";
+import { Link, useLoaderData, useNavigate } from "react-router-dom";
 import useGuides from "../../hooks/useGuides";
 import useAuth from "../../hooks/useAuth";
 import { useState } from "react";
 import { Button, Modal } from 'flowbite-react';
 import { useRef } from 'react';
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import DatePicker from "react-datepicker";
 
+import "react-datepicker/dist/react-datepicker.css";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const PackageDetails = () => {
+    const notify = () => toast("Well Done! You have booked this tour successfully");
 
     const tour = useLoaderData();
     const [guides] = useGuides();
     const { user } = useAuth();
     const [selectedGuide, setSelectedGuide] = useState('');
+    const [startDate, setStartDate] = useState(new Date());
+    const navigate = useNavigate();
     const axiosSecure = useAxiosSecure();
     const [booking] = useState({
         touristName: user?.displayName,
@@ -56,6 +63,10 @@ const PackageDetails = () => {
         // console.log(selectedGuide);
     };
 
+    const handleDateSelect = () => {
+        booking.date = startDate
+    }
+
     const handleBooking = async () => {
         // console.log(selectedGuide);
         booking.guide = selectedGuide
@@ -65,7 +76,11 @@ const PackageDetails = () => {
 
         try {
             const res = await axiosSecure.post(`/bookings`, booking)
-            console.log(res);
+            console.log(res.data);
+            if (res.data.insertedId) {
+                notify();
+                navigate(`/dashboard/bookings?email=${user?.email}`);
+            }
         } catch (e) {
             console.error(e);
         }
@@ -138,9 +153,17 @@ const PackageDetails = () => {
                                 <label htmlFor="price" className="text-sm">Price</label>
                                 <input onChange={handleChange} id="price" type="text" name="price" defaultValue={`$${tour?.price}`} readOnly placeholder="$" className="w-full rounded-md focus:ring focus:ri focus:ri dark:border-gray-700 dark:text-gray-900" spellCheck="false" data-ms-editor="true" />
                             </div>
-                            <div className="col-span-full">
-                                <label htmlFor="date" className="text-sm">Tour Date</label>
-                                <textarea onChange={handleChange} id="date" name="date" placeholder="" className="w-full rounded-md focus:ring focus:ri focus:ri dark:border-gray-700 dark:text-gray-900" spellCheck="false" data-ms-editor="true"></textarea>
+                            <div className="col-span-full flex flex-col">
+                                <label htmlFor="date" className="text-sm">Tour Date (start and onward)</label>
+                                {/* <textarea onChange={handleChange} id="date" name="date" placeholder="" className="w-full rounded-md focus:ring focus:ri focus:ri dark:border-gray-700 dark:text-gray-900" spellCheck="false" data-ms-editor="true"></textarea> */}
+                                <DatePicker
+                                    className="w-full rounded-md focus:ring focus:ri focus:ri dark:border-gray-700 dark:text-gray-900"
+                                    selected={startDate}
+                                    // selected={date}
+                                    onSelect={handleDateSelect} //when day is clicked
+                                    onChange={(date) => setStartDate(date)} //only when value has changed
+                                // onChange={handleDateChange} //only when value has changed
+                                />
                             </div>
                         </div>
                     </fieldset>
@@ -167,13 +190,14 @@ const PackageDetails = () => {
                                     <input type="submit" className="btn btn-primary bg-cyan-600 border-cyan-700 px-10" onClick={handleBooking} value={`Confirm Booking`} />
                                 </div>
                                 <div className="text-cyan-700 hover:underline dark:text-cyan-500">
-                                    <Link to={`/bookings`}><button>My Bookings</button></Link>
+                                    <Link to={`/dashboard/bookings?email=${user?.email}`}><button>My Bookings</button></Link>
                                 </div>
                             </div>
                         </div>
                     </Modal.Body>
                 </Modal>
             </>
+            <ToastContainer />
         </div>
     );
 };

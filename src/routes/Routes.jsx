@@ -15,12 +15,21 @@ import UpdateTourPackage from "../pages/Dashboard/UpdateTourPackage/UpdateTourPa
 import AllUsers from "../pages/Dashboard/AllUsers/AllUsers";
 import AllPackages from "../pages/AllPackages/AllPackages";
 import PackageDetails from "../pages/PackageDetails/PackageDetails";
+import MyBookings from "../pages/MyBookings/MyBookings";
+import ErrorElement from "../pages/ErrorPage/ErrorElement";
+import NotFound from "../pages/NotFoundPage/NotFound";
 
 export const router = createBrowserRouter([
     {
         path: '/',
         element: <Main></Main>,
+        errorElement: <ErrorElement></ErrorElement>,
+        // ErrorBoundary: <NotFound />,
         children: [
+            {
+                path: '*',
+                element: <NotFound></NotFound>
+            },
             {
                 index: true,
                 element: <Home />
@@ -51,11 +60,20 @@ export const router = createBrowserRouter([
     {
         path: 'dashboard',
         element: <PrivateRoute><Dashboard /></PrivateRoute>,
+        errorElement: <NotFound />,
         children: [
-            // normal user routes
+            {
+                path: '*',
+                element: <ErrorElement />
+            },
+            // normal user / tourist routes
             {
                 path: 'userHome',
                 element: <TouristHome />
+            },
+            {
+                path: 'bookings',
+                element: <MyBookings />
             },
 
             // admin only routes
