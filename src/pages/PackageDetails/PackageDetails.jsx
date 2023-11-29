@@ -1,32 +1,42 @@
-import { useLoaderData } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 import useGuides from "../../hooks/useGuides";
 import useAuth from "../../hooks/useAuth";
+import { useState } from "react";
+import { Button, Modal } from 'flowbite-react';
+// import { Button, Checkbox, Label, Modal, TextInput } from 'flowbite-react';
+import { useRef } from 'react';
+
 
 const PackageDetails = () => {
+
     const tour = useLoaderData();
     const [guides] = useGuides();
     const { user } = useAuth();
+    const [selectedGuide, setSelectedGuide] = useState('');
+
+    const [openModal, setOpenModal] = useState(false);
+    const emailInputRef = useRef < HTMLInputElement > (null);
 
     const handleSelectGuide = (e) => {
-        const selectedGuide = e.target.value;
+        setSelectedGuide(e.target.value)
+        // const selectedGuide = e.target.value;
         // Perform action with selectedGuide if needed
         console.log(selectedGuide);
     };
 
-    // const handleSelectGuide = (e) => {
-    //     const selectedGuide = e.target.value;
-    //     // Perform action with selectedGuide if needed
-    //     console.log(selectedGuide);
-    // };
+    const handleBooking = () => {
+        console.log(selectedGuide);
+
+    }
 
     return (
         <div>
-
-            <div>
-                <img src={tour?.image} alt="" />
+            <div className="w-full mx-auto">
+                <div className="w-full mx-auto">
+                    <img className="w-full h-96 rounded-3xl" src={tour?.image} alt="" />
+                </div>
                 <h2>{tour?.name}</h2>
                 <p>Description: {tour?.description}</p>
-
                 <h3>Tour Plan:</h3>
                 <ul>
                     {tour?.itinerary?.map((item, index) => (
@@ -35,43 +45,11 @@ const PackageDetails = () => {
                         </li>
                     ))}
                 </ul>
-
-                {/* <h3>Guides:</h3> */}
-
-
-                {/* <select onChange={handleSelectGuide}>
-                    <option value="">Select a Guide</option>
-                    {tour?.guides?.map((guide, index) => (
-                        <option key={index} value={guide}>
-                            {guide}
-                        </option>
-                    ))}
-                </select> */}
-
-                {/* <select onChange={handleSelectGuide}>
-                    <option value="">Select a Guide</option>
-                    {guides?.map((guide, index) => (
-                        <option key={index} value={guide?.email}>
-                            {guide?.name}
-                        </option>
-                    ))}
-                </select> */}
-
-                {/* <h3>{guides.map((guide,i)=>{
-
-                }}</h3> */}
-
-                {/* <ul>
-                                {tour?.guides?.map((guide, index) => (
-                                    <li key={index}>Guide {index + 1}: {guide}</li>
-                                ))}
-                            </ul> */}
-
-                {/* <p>Price: {tour?.price}</p> */}
             </div>
 
             {/* Booking form */}
             <section className="p-6 dark:bg-gray-800 dark:text-gray-50">
+                <h3 className="text-4xl text-center font-bold">Fill and submit the form bellow to book this tour</h3>
                 <form noValidate="" action="" className="container flex flex-col mx-auto space-y-12">
                     <fieldset className="grid grid-cols-4 gap-6 p-6 rounded-md shadow-sm dark:bg-gray-900">
                         <div className="grid grid-cols-6 gap-4 col-span-full">
@@ -132,11 +110,60 @@ const PackageDetails = () => {
                             </div>
                         </div>
                         <div className="flex-grow flex items-end">
-                            <button className="btn btn-primary w-full">Book Now</button>
+                            {/* <button onClick={handleBooking} className="btn btn-primary w-full">Book Now</button> */}
+                            <Button onClick={() => setOpenModal(true)} className="btn btn-primary w-full">Book Now</Button>
                         </div>
                     </div>
                 </form>
             </section>
+            <>
+                <Modal show={openModal} size="md" popup onClose={() => setOpenModal(false)} initialFocus={emailInputRef}>
+                    <Modal.Header />
+                    <Modal.Body>
+                        <div className="space-y-6">
+                            {/* <h3 className="text-xl font-medium text-gray-900 dark:text-white">Sign in to our platform</h3>
+                            <div>
+                                <div className="mb-2 block">
+                                    <Label htmlFor="email" value="Your email" />
+                                </div>
+                                <TextInput id="email" useRef={emailInputRef} placeholder="name@company.com" required />
+                            </div>
+                            <div>
+                                <div className="mb-2 block">
+                                    <Label htmlFor="password" value="Your password" />
+                                </div>
+                                <TextInput id="password" type="password" required />
+                            </div>
+                            <div className="flex justify-between">
+                                <div className="flex items-center gap-2">
+                                    <Checkbox id="remember" />
+                                    <Label htmlFor="remember">Remember me</Label>
+                                </div>
+                                <a href="#" className="text-sm text-cyan-700 hover:underline dark:text-cyan-500">
+                                    Lost Password?
+                                </a>
+                            </div> */}
+                            <div className="flex flex-col items-center justify-center gap-7">
+                                <div className="">
+                                    <Button onClick={handleBooking}>Confirm Booking</Button>
+                                </div>
+                                <div className="text-cyan-700 hover:underline dark:text-cyan-500">
+                                    <Link to={`/bookings`}><button>My Bookings</button></Link>
+                                </div>
+                            </div>
+                            {/* <div className="w-full">
+                                <Button onClick={handleBooking}>Log in to your account</Button>
+                            </div>
+                            <div className="flex justify-between text-sm font-medium text-gray-500 dark:text-gray-300">
+                                Not registered?&nbsp;
+                                <a href="#" className="text-cyan-700 hover:underline dark:text-cyan-500">
+                                    Create account
+                                </a>
+                            </div> */}
+                        </div>
+                    </Modal.Body>
+                </Modal>
+            </>
         </div>
     );
 };
