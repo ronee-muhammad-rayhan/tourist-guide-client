@@ -28,7 +28,7 @@ const PackageDetails = () => {
         touristPhotoURL: user?.photoURL,
         guide: '',
         price: tour?.price,
-        date: '',
+        date: startDate,
     })
 
     const [openModal, setOpenModal] = useState(false);
@@ -65,7 +65,7 @@ const PackageDetails = () => {
     };
 
     const handleDateSelect = () => {
-        booking.date = startDate
+        // booking.date = startDate
     }
 
     const handleBooking = async () => {
