@@ -101,7 +101,7 @@ const AllUsers = () => {
                                 <td>{user.name}</td>
                                 <td>{user.email}</td>
                                 <td>
-                                    {user.role === 'admin' ? 'Admin' : user.role === 'tour-guide' ? 'Tour Guide' : user.role === 'tourist' ? 'Tourist' : ''}
+                                    {user.role === 'admin' ? 'Admin' : user.role === 'tour-guide' ? 'Tour Guide' : user.role === 'tourist' ? 'Tourist' : 'Tourist'}
                                 </td>
                                 <td>
                                     <div className="text-center space-x-2 space-y-1">

@@ -1,19 +1,31 @@
 // import { useState } from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+// import { useEffect, useState } from "react";
 import useAuth from "../../hooks/useAuth";
 // import useAxiosSecure from "../../hooks/useAxiosSecure";
 // import useBookings from "../../hooks/useBookings";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import { useQuery } from "@tanstack/react-query";
+import Swal from "sweetalert2";
 
 const MyBookings = () => {
     const { user } = useAuth();
-    const [bookings, setBookings] = useState([]);
+    // const [bookings, setBookings] = useState([]);
     const [status, setStatus] = useState('InReview');
-    const axiosSecure = useAxiosSecure();
     // const [bookings] = useBookings();
     const statusArray = ['InReview', 'Rejected', 'Accepted']
 
-    useEffect(() => {
+    const axiosSecure = useAxiosSecure();
+    const { data: bookings = [], refetch } = useQuery({
+        queryKey: ['bookings', user?.email, status],
+        queryFn: async () => {
+            const res = await axiosSecure.get(`/dashboard/bookings?email=${user?.email}`);
+            // const res = await axiosSecure.get(`/bookings`);
+            return res.data;
+        }
+    })
+
+    /* useEffect(() => {
 
         // const getBookingsFromApiAsync = async () => {
         //     const resopnse = await fetch(
@@ -47,7 +59,7 @@ const MyBookings = () => {
         // } catch (e) {
         //     console.error(e);
         // }
-    }, [axiosSecure, user?.email])
+    }, [axiosSecure, user?.email]) */
     // }, [axiosSecure, user?.email])
 
     // const [bookings, setBookings] = useState([]);
@@ -57,17 +69,99 @@ const MyBookings = () => {
     //         setBookings(res.data)
     //     })
 
-    const handleStatus = (e) => {
+    // const [statusId, setStatusId] = useState('');
+
+    // const { data: booking = [] } = useQuery({
+    //     queryKey: ['booking', user?.email],
+    //     queryFn: async () => {
+    //         const res = await axiosSecure.get(`/bookings/${statusId}`);
+    //         // const res = await axiosSecure.get(`/bookings`);
+    //         return res.data;
+    //     }
+    // })
+
+    const handleStatus = async (e) => {
+        // e.preventDefault();
         setStatus(e.target.value)
+        console.log(e.target.value);
         // console.log(selectedGuide);
+
+        const id = e.target.parentNode.parentNode.parentNode.id;
+        console.log(id);
+        // setStatusId(id);
+        // console.log(e.target.parentNode.parentNode.parentNode.id);
+        // console.log(e.target.parentNode.parentNode.parentNode.id);
+        // console.log(e.target.parentNode.parentNode.parentNode.parentNode.innerHTML);
+        // console.log(e.target.parentNode.parentNode.parentNode.parentNode.innerHTML);
+        // console.log(e.target.parentNode.parentNode.parentNode.parentNode);
+        // console.log(e.target.parentNode.parentNode.parentNode.innerHTML);
+        // console.log(e.target.parentNode.parentNode.parentNode.innerHTML);
+        // console.log(e.target.key);
+        // console.log(e.target.parentNode);
+
+
+
+        const updatedBooking = {
+            // tourPackageTitle: booking?.tourPackageTitle,
+            // touristName: booking?.touristName,
+            // touristEmail: booking?.touristEmail,
+            // touristPhotoURL: booking?.touristPhotoURL,
+            // guide: booking?.guide,
+            // price: booking?.price,
+            // date: booking?.date,
+            // status: booking?.status,
+            status: status,
+        }
+
+        await axiosSecure.patch(`/bookings/${id}`, updatedBooking)
+            .then(res => {
+                console.log(res.data);
+                if (res.data.modifiedCount > 0) {
+                    refetch();
+                    // setIsActionApplied(true);
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: `${status} is updated`,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            })
     };
 
     const handleApply = () => { }
-    const handleCancel = () => { }
+    const handleCancel = (e) => {
+        // e.preventDefault();
+        setStatus('Rejected');
+        const id = e.target.parentNode.parentNode.parentNode.id;
+        console.log(id);
+        console.log(status);
+        // handleStatus();
+        const updatedBooking = {
+            status: status,
+        }
+
+        axiosSecure.patch(`/bookings/${id}`, updatedBooking)
+            .then(res => {
+                console.log(res.data);
+                if (res.data.modifiedCount > 0) {
+                    refetch();
+                    // setIsActionApplied(true);
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: `${status} is updated`,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            })
+    }
     const handlePay = () => { }
 
     return (
-        <div>
+        <form>
             <h3 className="text-4xl">My Total Bookings: {bookings.length}</h3>
             <div>
                 <div className="container p-2 mx-auto sm:p-4 dark:text-gray-100 overflow-x-auto">
@@ -97,7 +191,7 @@ const MyBookings = () => {
                                 {
                                     bookings.map((booking, i) => {
                                         return (
-                                            <tr key={i} className="border-b border-opacity-20 dark:border-gray-700 dark:bg-gray-900">
+                                            <tr id={booking?._id} key={i} className="border-b border-opacity-20 dark:border-gray-700 dark:bg-gray-900">
                                                 <td className="p-3">
                                                     <p>{i + 1}</p>
                                                 </td>
@@ -116,9 +210,9 @@ const MyBookings = () => {
                                                     <p>{`$${booking?.price}`}</p>
                                                 </td>
                                                 <td className="p-3 text-right">
-                                                    <form className="col-span-full sm:col-span-3">
+                                                    <div className="col-span-full sm:col-span-3">
                                                         {/* <label htmlFor="guide" className="text-sm">Your Tour Guide</label> */}
-                                                        <select id="status" onChange={handleStatus} className="w-32">
+                                                        <select disabled={(booking?.status === 'Accepted')} defaultValue={booking?.status} id="status" onChange={handleStatus} className="w-32">
                                                             {/* <option value="">Select a Guide</option> */}
                                                             {statusArray?.map((el, index) => (
                                                                 <option className="w-20" key={index} value={el}>
@@ -126,7 +220,7 @@ const MyBookings = () => {
                                                                 </option>
                                                             ))}
                                                         </select>
-                                                    </form>
+                                                    </div>
                                                 </td>
                                                 {/* <td className="p-3 text-right">
                                                     <span className="px-3 py-1 font-semibold rounded-md dark:bg-violet-400 dark:text-gray-900">
@@ -134,20 +228,22 @@ const MyBookings = () => {
                                                     </span>
                                                 </td> */}
                                                 <td className="p-3 text-right">
+
                                                     <div className="text-center space-x-2 space-y-1">
-                                                        {<button disabled={user?.isDisabled} /* disabled={isActionApplied} */ onClick={() => handleApply(user)} className="btn btn-xs bg-yellow-500">
+                                                        {<button disabled={!(booking?.status === 'Accepted')} /* disabled={isActionApplied} */ onClick={() => handleApply(user)} className="btn btn-xs bg-yellow-500">
                                                             <h3 className="text-white text-md">Apply</h3>
                                                         </button>}
-                                                        {<button disabled={user?.isDisabled} /* disabled={isActionApplied} */ onClick={() => handleCancel(user)} className="btn btn-xs bg-red-500">
-                                                            <h3 className="text-white text-md">Cancel</h3>
-                                                        </button>}
-                                                        {<button disabled={!(status === 'Accepted')} /* disabled={isActionApplied} */ onClick={() => handlePay(user)} className="btn btn-xs bg-lime-500">
+                                                        {
+                                                            <input type="submit" disabled={(booking?.status === 'Accepted')} value={`Cancel`} /* disabled={isActionApplied} */ onClick={handleCancel} className="btn btn-xs bg-red-500 text-white text-md" />
+                                                        }
+                                                        {<button disabled={!(booking?.status === 'Accepted')} /* disabled={isActionApplied} */ onClick={() => handlePay(user)} className="btn btn-xs bg-lime-500">
                                                             <h3 className="text-white text-md">Pay</h3>
                                                         </button>}
                                                         {/* <button disabled onClick={() => handleDeleteUser(user)} className="btn btn-ghost btn-lg">
                                         <FaTrashAlt className="text-red-600"></FaTrashAlt>
                                     </button> */}
                                                     </div>
+
                                                 </td>
                                             </tr>
                                         )
@@ -158,7 +254,7 @@ const MyBookings = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </form>
     );
 };
 
