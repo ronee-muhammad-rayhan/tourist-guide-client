@@ -14,11 +14,7 @@ const AddTour = () => {
     const { user } = useAuth()
     const [loading, setLoading] = useState(false)
     const [uploadButtonText, setUploadButtonText] = useState('Upload Image')
-    const [dates, setDates] = useState({
-        startDate: new Date(),
-        endDate: new Date(),
-        key: 'selection',
-    })
+    const [itinerary, setItinerary] = useState([])
 
     const handleSubmit = async e => {
         setLoading(true)
@@ -26,10 +22,7 @@ const AddTour = () => {
         const form = e.target
         const title = form.title.value
         const category = form.category.value
-        const to = dates.endDate
-        const from = dates.startDate
         const price = form.price.value
-        const guides = form.tour_guides.value
         const description = form.description.value
         const image = form.image.files[0]
         const host = {
@@ -40,13 +33,10 @@ const AddTour = () => {
         const image_url = await imageUpload(image)
 
         const tourData = {
-
             title,
             category,
-            to,
-            from,
+            itinerary,
             price,
-            guides,
             host,
             description,
             image: image_url?.data?.display_url,
@@ -56,7 +46,7 @@ const AddTour = () => {
             const data = await addTour(tourData)
             console.log(data)
             setUploadButtonText('Uploaded!')
-            toast.success('Room Added!')
+            toast.success('Tour Added!')
             navigate('/tours')
         } catch (err) {
             console.log(err)
@@ -69,15 +59,20 @@ const AddTour = () => {
     }
 
     // Handle date change from react-date-range calender
-    const handleDates = ranges => {
-        console.log(ranges)
-        setDates(ranges.selection)
+    // const handleDates = ranges => {
+    //     console.log(ranges)
+    //     setDates(ranges.selection)
+    // }
+    const handleAddDay = () => {
+        setItinerary([...itinerary, { day: '', description: '' }])
     }
 
     // Handle Image button text
     const handleImageChange = image => {
         setUploadButtonText(image.name)
     }
+
+
 
     return (
         <div>
@@ -88,8 +83,9 @@ const AddTour = () => {
             {/* Form */}
             <AddTourForm
                 handleSubmit={handleSubmit}
-                handleDates={handleDates}
-                dates={dates}
+                handleAddDay={handleAddDay}
+                itinerary={itinerary}
+                setItinerary={setItinerary}
                 handleImageChange={handleImageChange}
                 loading={loading}
                 uploadButtonText={uploadButtonText}

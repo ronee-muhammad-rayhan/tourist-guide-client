@@ -1,14 +1,36 @@
-import { DateRange } from 'react-date-range'
 import { TbFidgetSpinner } from 'react-icons/tb'
 import { categories } from '../Categories/categoriesData.js'
 const AddTourForm = ({
     handleSubmit,
-    dates,
-    handleDates,
+    itinerary,
+    setItinerary,
+    handleAddDay,
     loading = false,
     handleImageChange,
     uploadButtonText,
 }) => {
+
+
+    const handleChange = (e, index) => {
+        const { name, value } = e.target;
+        console.log(e.target, index);
+
+        if (name.startsWith('itineraryDay') || name.startsWith('itineraryDescription')) {
+            const updatedItinerary = [...itinerary];
+            updatedItinerary[index] = {
+                ...updatedItinerary[index],
+                [name === `itineraryDay${index}` ? 'day' : 'description']: value,
+            };
+            setItinerary(updatedItinerary)
+        } else {
+            setItinerary((prevData) => ({
+                ...prevData,
+                [name]: value,
+            }));
+        }
+    };
+
+
     return (
         <div
             className='w-full min-h-[calc(100vh-40px)] flex flex-col justify-center items-center text-gray-800 rounded-xl bg-gray-50'>
@@ -42,7 +64,32 @@ const AddTourForm = ({
                             <label htmlFor='location' className='block text-gray-600'>
                                 Tour Plan
                             </label>
-                            <DateRange rangeColors={['#F43F5E']} ranges={[dates]} onChange={handleDates} minDate={new Date()} />
+                            {itinerary?.map((element, index) => (
+                                <div key={index}>
+                                    <label>
+                                        Day {index + 1}:
+                                        <input
+                                            type="text"
+                                            name={`itineraryDay${index}`}
+                                            value={element?.day}
+                                            onChange={(e) => handleChange(e, index)}
+                                        />
+                                    </label>
+                                    <br />
+                                    <label>
+                                        Description:
+                                        <textarea
+                                            name={`itineraryDescription${index}`}
+                                            value={element?.description}
+                                            onChange={(e) => handleChange(e, index)}
+                                        />
+                                    </label>
+                                    <br />
+                                </div>
+                            ))}
+                            <button type="button" onClick={handleAddDay}>
+                                Add Day
+                            </button>
                         </div>
                     </div>
                     <div className='space-y-6'>
@@ -51,27 +98,16 @@ const AddTourForm = ({
                                 Description
                             </label>
                             <textarea id='description'
-                                className='block rounded-md focus:rose-300 w-full h-32 px-4 py-3 text-gray-800  border border-rose-300 focus:outline-rose-500 '
+                                className='block rounded-md focus:rose-300 w-full px-4 py-3 text-gray-800  border border-rose-300 focus:outline-rose-500 '
                                 name='description' placeholder='About the Tour'></textarea>
                         </div>
-                        <div className='flex justify-between gap-2'>
-                            <div className='space-y-1 text-sm'>
-                                <label htmlFor='price' className='block text-gray-600'>
-                                    Price
-                                </label>
-                                <input
-                                    className='w-full px-4 py-3 text-gray-800 border border-rose-300 focus:outline-rose-500 rounded-md '
-                                    name='price' id='price' type='number' placeholder='Price' required />
-                            </div>
-
-                            <div className='space-y-1 text-sm'>
-                                <label htmlFor='guest' className='block text-gray-600'>
-                                    Tour Guides
-                                </label>
-                                <input
-                                    className='w-full px-4 py-3 text-gray-800 border border-rose-300 focus:outline-rose-500 rounded-md '
-                                    name='tour_guides' id='guides' type='text' placeholder='Tour Guides' required />
-                            </div>
+                        <div className='space-y-1 text-sm'>
+                            <label htmlFor='price' className='block text-gray-600'>
+                                Price
+                            </label>
+                            <input
+                                className='w-full px-4 py-3 text-gray-800 border border-rose-300 focus:outline-rose-500 rounded-md '
+                                name='price' id='price' type='number' placeholder='Price' required />
                         </div>
                         <div className=' p-4 bg-white w-full  m-auto rounded-lg'>
                             <div className='file_upload px-5 py-3 relative border-4 border-dotted border-gray-300 rounded-lg'>
