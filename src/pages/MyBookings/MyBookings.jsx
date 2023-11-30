@@ -33,95 +33,17 @@ const MyBookings = () => {
     if (bookings.length > 3) {
         console.log('confetti');
         apply = true;
-        // setApply(true);
-        // return
     }
 
-    /* useEffect(() => {
-
-        // const getBookingsFromApiAsync = async () => {
-        //     const resopnse = await fetch(
-        //         `http://localhost:5005/dashboard/bookings`
-        //     );
-        //     const resopnseJson = await resopnse.json();
-        //     console.log("json", resopnseJson);
-        //     setBookings(resopnseJson);
-        // };
-
-        // getBookingsFromApiAsync();
-
-
-
-        try {
-            axiosSecure.get(`/dashboard/bookings?email=${user?.email}`)
-                .then(response => {
-                    setBookings(response.data);
-                })
-
-        } catch (e) {
-            console.error(e);
-        }
-
-        // try {
-        //     axiosSecure.get(`/dashboard/bookings?email=${user?.email}`)
-        //         .then(response => {
-        //             setBookings(response.data);
-        //         })
-
-        // } catch (e) {
-        //     console.error(e);
-        // }
-    }, [axiosSecure, user?.email]) */
-    // }, [axiosSecure, user?.email])
-
-    // const [bookings, setBookings] = useState([]);
-    // const axiosSecure = useAxiosSecure();
-    // axiosSecure.get(`/bookings?email=${user?.email}`)
-    //     .then(res => {
-    //         setBookings(res.data)
-    //     })
-
-    // const [statusId, setStatusId] = useState('');
-
-    // const { data: booking = [] } = useQuery({
-    //     queryKey: ['booking', user?.email],
-    //     queryFn: async () => {
-    //         const res = await axiosSecure.get(`/bookings/${statusId}`);
-    //         // const res = await axiosSecure.get(`/bookings`);
-    //         return res.data;
-    //     }
-    // })
-
     const handleStatus = async (e) => {
-        // e.preventDefault();
         setStatus(e.target.value)
         console.log(e.target.value);
         // console.log(selectedGuide);
 
         const id = e.target.parentNode.parentNode.parentNode.id;
         console.log(id);
-        // setStatusId(id);
-        // console.log(e.target.parentNode.parentNode.parentNode.id);
-        // console.log(e.target.parentNode.parentNode.parentNode.id);
-        // console.log(e.target.parentNode.parentNode.parentNode.parentNode.innerHTML);
-        // console.log(e.target.parentNode.parentNode.parentNode.parentNode.innerHTML);
-        // console.log(e.target.parentNode.parentNode.parentNode.parentNode);
-        // console.log(e.target.parentNode.parentNode.parentNode.innerHTML);
-        // console.log(e.target.parentNode.parentNode.parentNode.innerHTML);
-        // console.log(e.target.key);
-        // console.log(e.target.parentNode);
-
-
 
         const updatedBooking = {
-            // tourPackageTitle: booking?.tourPackageTitle,
-            // touristName: booking?.touristName,
-            // touristEmail: booking?.touristEmail,
-            // touristPhotoURL: booking?.touristPhotoURL,
-            // guide: booking?.guide,
-            // price: booking?.price,
-            // date: booking?.date,
-            // status: booking?.status,
             status: status,
         }
 
@@ -130,7 +52,6 @@ const MyBookings = () => {
                 console.log(res.data);
                 if (res.data.modifiedCount > 0) {
                     refetch();
-                    // setIsActionApplied(true);
                     Swal.fire({
                         position: "top-end",
                         icon: "success",
@@ -144,12 +65,10 @@ const MyBookings = () => {
 
     const handleApply = () => { }
     const handleCancel = (e) => {
-        // e.preventDefault();
         setStatus('Rejected');
         const id = e.target.parentNode.parentNode.parentNode.id;
         console.log(id);
         console.log(status);
-        // handleStatus();
         const updatedBooking = {
             status: status,
         }
@@ -159,7 +78,6 @@ const MyBookings = () => {
                 console.log(res.data);
                 if (res.data.modifiedCount > 0) {
                     refetch();
-                    // setIsActionApplied(true);
                     Swal.fire({
                         position: "top-end",
                         icon: "success",
@@ -212,21 +130,17 @@ const MyBookings = () => {
                                                         <p>{booking?.tourPackageTitle}</p>
                                                     </td>
                                                     <td className="p-3">
-                                                        {/* <p>14 Jan 2022</p> */}
                                                         <p className="dark:text-gray-400">{booking?.guide}</p>
                                                     </td>
                                                     <td className="p-3">
                                                         <p>{booking?.date}</p>
-                                                        {/* <p className="dark:text-gray-400">Tuesday</p> */}
                                                     </td>
                                                     <td className="p-3 text-right">
                                                         <p>{`$${booking?.price}`}</p>
                                                     </td>
                                                     <td className="p-3 text-right">
                                                         <div className="col-span-full sm:col-span-3">
-                                                            {/* <label htmlFor="guide" className="text-sm">Your Tour Guide</label> */}
                                                             <select disabled={(booking?.status === 'Accepted')} defaultValue={booking?.status} id="status" onChange={handleStatus} className="w-32">
-                                                                {/* <option value="">Select a Guide</option> */}
                                                                 {statusArray?.map((el, index) => (
                                                                     <option className="w-20" key={index} value={el}>
                                                                         {el}
@@ -235,11 +149,6 @@ const MyBookings = () => {
                                                             </select>
                                                         </div>
                                                     </td>
-                                                    {/* <td className="p-3 text-right">
-                                                    <span className="px-3 py-1 font-semibold rounded-md dark:bg-violet-400 dark:text-gray-900">
-                                                        <span>In Review</span>
-                                                    </span>
-                                                </td> */}
                                                     <td className="p-3 text-right">
 
                                                         <div className="text-center space-x-2 space-y-1">
@@ -252,9 +161,6 @@ const MyBookings = () => {
                                                             {<button disabled={!(booking?.status === 'Accepted')} /* disabled={isActionApplied} */ onClick={() => handlePay(user)} className="btn btn-xs bg-lime-500">
                                                                 <h3 className="text-white text-md">Pay</h3>
                                                             </button>}
-                                                            {/* <button disabled onClick={() => handleDeleteUser(user)} className="btn btn-ghost btn-lg">
-                                        <FaTrashAlt className="text-red-600"></FaTrashAlt>
-                                    </button> */}
                                                         </div>
 
                                                     </td>
@@ -271,7 +177,6 @@ const MyBookings = () => {
             </form>
             {
                 apply && <Confetti
-                    // disabled={`${apply}`}
                     tweenDuration={13000}
                     numberOfPieces={3000}
                     recycle={false}

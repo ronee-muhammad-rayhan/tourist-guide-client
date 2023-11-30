@@ -2,29 +2,10 @@ import './Navbar.css'
 import { Avatar, Dropdown, Navbar } from "flowbite-react";
 import profileImage from "./../../../assets/images/profile-picture-5.jpg";
 import useAuth from '../../../hooks/useAuth';
-// import { useNavigate } from 'react-router-dom';
-/* import { useEffect } from 'react'; */
 
 export default function NavbarFlowbite() {
     // set the target element that will be collapsed or expanded (eg. navbar menu)
     const { user, logOut } = useAuth();
-    // const navigate = useNavigate();
-
-    // const handleLogOut = () => {
-    //     logOut()
-    //         .then(() => {
-    //             return navigate('/');
-    //         })
-    //         .catch(error => console.log(error));
-    // }
-
-    /* useEffect(() => {
-        (async () => {
-            if (user === null) {
-                return
-            }
-        })()
-    }, [user]) */
 
     return (
         <nav>
@@ -83,7 +64,6 @@ export default function NavbarFlowbite() {
                     <Navbar.Link href="/blogs">Blogs</Navbar.Link>
                     <Navbar.Link href="/about">About Us</Navbar.Link>
                     <Navbar.Link href="/contact">Contact Us</Navbar.Link>
-                    {/* <Navbar.Link href="/login">Login</Navbar.Link> */}
                     {
                         !user && <Navbar.Link href="/register">Register</Navbar.Link>
                     }

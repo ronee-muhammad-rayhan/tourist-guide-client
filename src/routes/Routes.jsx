@@ -26,7 +26,6 @@ export const router = createBrowserRouter([
         path: '/',
         element: <Main></Main>,
         errorElement: <ErrorElement></ErrorElement>,
-        // ErrorBoundary: <NotFound />,
         children: [
             {
                 path: '*',
@@ -51,7 +50,7 @@ export const router = createBrowserRouter([
             {
                 path: 'tours/:id',
                 element: <PackageDetails />,
-                loader: ({ params }) => fetch(`http://localhost:5005/tours/${params.id}`)
+                loader: ({ params }) => fetch(`${import.meta.env.VITE_API_URL}/tours/${params.id}`)
             },
             {
                 path: 'contact',
@@ -81,15 +80,13 @@ export const router = createBrowserRouter([
             // tour-guide routes
             {
                 path: 'profile/users/:email',
-                // path: 'tourist/profile/:email',
                 element: <MyProfile />,
-                loader: ({ params }) => fetch(`http://localhost:5005/dashboard/profile/users/${params?.email}`)
-                // loader: ({ params }) => fetch(`http://localhost:5005/dashboard/tourist/profile/${params?.email}`)
+                loader: ({ params }) => fetch(`${import.meta.env.VITE_API_URL}/dashboard/profile/users/${params?.email}`)
             },
             {
                 path: 'assigned-tours/:email',
                 element: <MyAssignedTours />,
-                loader: ({ params }) => fetch(`http://localhost:5005/dashboard/assigned-tours/${params?.email}`)
+                loader: ({ params }) => fetch(`${import.meta.env.VITE_API_URL}/dashboard/assigned-tours/${params?.email}`)
             },
 
             // admin only routes
@@ -112,7 +109,7 @@ export const router = createBrowserRouter([
             {
                 path: 'updateTourPackage/:id',
                 element: <AdminRoute><UpdateTourPackage /></AdminRoute>,
-                loader: ({ params }) => fetch(`http://localhost:5005/tours/${params.id}`)
+                loader: ({ params }) => fetch(`${import.meta.env.VITE_API_URL}/tours/${params.id}`)
             },
             {
                 path: 'users',
