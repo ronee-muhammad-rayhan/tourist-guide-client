@@ -9,7 +9,7 @@ const MyAssignedTours = () => {
     const assignedTours = useLoaderData();
     const { user } = useAuth();
     const [status, setStatus] = useState('InReview');
-    let apply = false
+    // let apply = false
     const statusArray = ['InReview', 'Rejected', 'Accepted']
 
     const axiosSecure = useAxiosSecure();
@@ -51,7 +51,7 @@ const MyAssignedTours = () => {
             })
     };
 
-    const handleApply = () => { }
+    // const handleApply = () => { }
     const handleCancel = (e) => {
         // e.preventDefault();
         setStatus('Rejected');
