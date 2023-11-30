@@ -2,9 +2,16 @@ import { NavLink, Outlet } from "react-router-dom";
 import { FaHome, FaAd, FaList, FaSearch, FaEnvelope, FaUsers, FaBook, FaUser, FaListAlt } from 'react-icons/fa';
 import useAdmin from "../hooks/useAdmin";
 import useAuth from "../hooks/useAuth";
+import useUsers from "../hooks/useUsers";
 
 const Dashboard = () => {
     const { user } = useAuth();
+
+    const [users] = useUsers();
+    console.log(users);
+
+    const loggedInUser = users.find(u => u?.email === user.email);
+    console.log(loggedInUser);
 
     // TODO: get isAdmin value from the database
     // const isAdmin = true;
@@ -44,7 +51,7 @@ const Dashboard = () => {
                                     Manage Users</NavLink>
                             </li>
                         </>
-                            : user?.role === 'tour-guide' ?
+                            : loggedInUser?.role === 'tour-guide' ?
                                 <>
                                     <li>
                                         <NavLink to="/dashboard/tourGuideHome">
@@ -62,7 +69,7 @@ const Dashboard = () => {
                                             My Assigned Tours</NavLink>
                                     </li>
                                 </>
-                                : user?.role === 'tourist' ?
+                                : loggedInUser?.role === 'tourist' ?
                                     <>
                                         <li>
                                             <NavLink to="/dashboard/touristHome">

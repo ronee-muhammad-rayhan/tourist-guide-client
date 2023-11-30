@@ -79,9 +79,16 @@ export const router = createBrowserRouter([
 
             // tour-guide routes
             {
-                path: '/dashboard/tourist/profile/:email',
+                path: 'profile/users/:email',
+                // path: 'tourist/profile/:email',
                 element: <MyProfile />,
-                loader: ({ params }) => fetch(`/dashboard/tourist/profile/${params?.email}`)
+                loader: ({ params }) => fetch(`http://localhost:5005/dashboard/profile/users/${params?.email}`)
+                // loader: ({ params }) => fetch(`http://localhost:5005/dashboard/tourist/profile/${params?.email}`)
+            },
+            {
+                path: 'tourist/assigned-tours/:email',
+                element: <MyProfile />,
+                loader: ({ params }) => fetch(`http://localhost:5005/dashboard/tourist/profile/${params?.email}`)
             },
 
             // admin only routes
