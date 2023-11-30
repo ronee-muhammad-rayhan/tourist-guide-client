@@ -19,6 +19,7 @@ import MyBookings from "../pages/MyBookings/MyBookings";
 import ErrorElement from "../pages/ErrorPage/ErrorElement";
 import NotFound from "../pages/NotFoundPage/NotFound";
 import MyProfile from "../pages/Dashboard/MyProfile/MyProfile";
+import MyAssignedTours from "../pages/Dashboard/MyAssignedTours/MyAssignedTours";
 
 export const router = createBrowserRouter([
     {
@@ -86,9 +87,9 @@ export const router = createBrowserRouter([
                 // loader: ({ params }) => fetch(`http://localhost:5005/dashboard/tourist/profile/${params?.email}`)
             },
             {
-                path: 'tourist/assigned-tours/:email',
-                element: <MyProfile />,
-                loader: ({ params }) => fetch(`http://localhost:5005/dashboard/tourist/profile/${params?.email}`)
+                path: 'assigned-tours/:email',
+                element: <MyAssignedTours />,
+                loader: ({ params }) => fetch(`http://localhost:5005/dashboard/assigned-tours/${params?.email}`)
             },
 
             // admin only routes

@@ -64,7 +64,8 @@ const Dashboard = () => {
                                             My Profile</NavLink>
                                     </li>
                                     <li>
-                                        <NavLink to={`/dashboard/tour-guide/bookings/${user?.email}`}>
+                                        {/* <NavLink to={`/dashboard/tour-guide/bookings/${user?.email}`}> */}
+                                        <NavLink to={`/dashboard/assigned-tours/${user?.email}`}>
                                             <FaBook></FaBook>
                                             My Assigned Tours</NavLink>
                                     </li>
