@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import Categories from "../Categories/Categories";
 
 const TourType = () => {
     return (
@@ -17,6 +18,8 @@ const TourType = () => {
             >
 
             </motion.div>
+
+            <Categories />
         </div>
     );
 };
